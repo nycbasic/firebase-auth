@@ -1,6 +1,7 @@
 import { SIGN_UP, ERROR } from "./Types";
 import { auth } from "../config/Firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const SignUp = (email, password) => async (dispatch) => {
   try {
