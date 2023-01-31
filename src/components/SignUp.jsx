@@ -1,10 +1,20 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
+import { connect } from "react-redux";
 import { Card, Form, Button } from "react-bootstrap";
+import { SignUp } from "../actions/Auth";
 
-const SignUp = () => {
-    const emailRef = useRef();
-    const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
+const SignUpForm = (props) => {
+  console.log(props);
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
+
+  const handleSubmit = (e) => {
+    console.log(props);
+    e.preventDefault();
+    props.SignUp(emailRef.current.value, passwordRef.current.value);
+  };
+
   return (
     <>
       <Card>
@@ -23,7 +33,11 @@ const SignUp = () => {
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control type="password" ref={confirmPasswordRef} required />
             </Form.Group>
-            <Button type="submit" className="w-100">
+            <Button
+              type="submit"
+              className="w-100 mt-3"
+              onClick={(e) => handleSubmit(e)}
+            >
               Sign-Up!
             </Button>
           </Form>
@@ -36,4 +50,10 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default connect(mapStateToProps, { SignUp })(SignUpForm);
