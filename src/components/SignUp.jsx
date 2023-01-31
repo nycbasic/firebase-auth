@@ -2,21 +2,21 @@ import React, { useRef } from "react";
 import { connect } from "react-redux";
 import { Card, Form, Button } from "react-bootstrap";
 import { SignUp } from "../actions/Auth";
+import AuthLayout from "./layout/auth/auth-layout";
 
 const SignUpForm = (props) => {
-  console.log(props);
+  console.log(props.error);
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
 
   const handleSubmit = (e) => {
-    console.log(props);
     e.preventDefault();
     props.SignUp(emailRef.current.value, passwordRef.current.value);
   };
 
   return (
-    <>
+    <AuthLayout>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up!</h2>
@@ -46,13 +46,14 @@ const SignUpForm = (props) => {
       <div className="w-100 text-center mt-2">
         Already have an account? Login
       </div>
-    </>
+    </AuthLayout>
   );
 };
 
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    error: state.error,
   };
 }
 
