@@ -1,24 +1,61 @@
-import { SIGN_UP, ERROR } from "./Types";
+import { AUTH, ERROR } from "./Types";
 import { auth } from "../config/Firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
-export const SignUp = (email, password) => async (dispatch) => {
+export const userAuthorized = (user) => (dispatch) => {
+  return dispatch({
+    type: AUTH,
+    payload: user,
+  });
+};
+
+export const signUp = (email, password) => async (dispatch) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
-    return dispatch({
-      type: SIGN_UP,
-      payload: res.user,
-    });
+    if (res.user) {
+      return dispatch({
+        type: AUTH,
+        payload: true,
+      });
+    }
   } catch (err) {
     return dispatch({
       type: ERROR,
       payload: err,
     });
   }
+};
 
-  //   return dispatch({
-  //     type: SIGN_UP,
-  //     payload: "SOME TEST!",
-  //   });
+export const login = (email, password) => async (dispatch) => {
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    // if (res.user) {
+    //   return userAuthorized(true);
+    // }
+  } catch (err) {
+    switch (err.code) {
+      case "auth/user-not-found":
+        return dispatch({
+          type: ERROR,
+          payload: "User does not exist!",
+        });
+      case "auth/wrong-password":
+        return dispatch({
+          type: ERROR,
+          payload: "Password is incorrect!",
+        });
+      default:
+        return null;
+    }
+  }
+};
+
+export const signUserOut = () => {
+  try {
+    signOut(auth);
+  } catch (err) {}
 };

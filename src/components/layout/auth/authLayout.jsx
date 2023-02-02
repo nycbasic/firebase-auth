@@ -2,24 +2,27 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Card, Form, Button } from "react-bootstrap";
-import { SignUp } from "../../../actions/Auth";
+import { signUp, login } from "../../../actions/Auth";
 
-const AuthLayout = ({ data, SignUp }) => {
+const AuthLayout = ({ data, signUp, login }) => {
   const {
     title,
     inputNames: { first, second, third },
     refs: { firstRef, secondRef, thirdRef },
     func,
-    login,
+    form,
   } = data;
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (func === "SignUp") {
-      SignUp(firstRef.current.value, secondRef.current.value);
+      signUp(firstRef.current.value, secondRef.current.value);
     }
     if (func === "Login") {
-      console.log("LOGIN ACTION!");
+      login(firstRef.current.value, secondRef.current.value);
+      firstRef.current.value = "";
+      secondRef.current.value = "";
     }
   };
   return (
@@ -57,7 +60,7 @@ const AuthLayout = ({ data, SignUp }) => {
           </Card.Body>
         </Card>
         <div className="w-100 text-center mt-2">
-          {login
+          {form === "login"
             ? "Forgot your password? Click here"
             : "Already have an account? Login"}
         </div>
@@ -66,4 +69,4 @@ const AuthLayout = ({ data, SignUp }) => {
   );
 };
 
-export default connect(null, { SignUp })(AuthLayout);
+export default connect(null, { signUp, login })(AuthLayout);

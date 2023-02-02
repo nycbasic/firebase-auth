@@ -1,10 +1,11 @@
-import { SIGN_UP } from "../actions/Types";
+import { AUTH } from "../actions/Types";
 
-const authReducer = (state = {}, action ) => {
+const init = {uid: "", authenticated: false};
+
+const authReducer = (state = init, action ) => {
     const {payload, type} = action;
     switch(type) {
-        case SIGN_UP: 
-            console.log(SIGN_UP)
+        case AUTH:
             return payload; 
         default:
             return state;

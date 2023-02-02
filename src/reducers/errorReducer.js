@@ -1,13 +1,13 @@
 import { ERROR } from "../actions/Types";
 const init = {
-  error: "",
+  error: null,
 };
 
 const errorReducer = (state = init, action) => {
   const { payload, type } = action;
   switch (type) {
     case ERROR:
-      return { ...state, error: payload };
+      return payload;
     default:
       return state;
   }

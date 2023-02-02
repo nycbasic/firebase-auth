@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { SignUp } from "../actions/Auth";
+import { Navigate } from "react-router";
+import { signUp } from "../actions/Auth";
 import AuthLayout from "./layout/auth/authLayout";
 
 const SignUpForm = (props) => {
   console.log(props.error);
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const confirmPasswordRef = useRef();
+  const emailRef = useRef("");
+  const passwordRef = useRef("");
+  const confirmPasswordRef = useRef("");
 
   const data = {
     title: "Sign Up!",
@@ -21,9 +22,13 @@ const SignUpForm = (props) => {
       secondRef: passwordRef,
       thirdRef: confirmPasswordRef,
     },
-    func: "Login",
-    login: false,
+    func: "SignUp",
+    form: "signup",
   };
+
+   if (props.auth.authenticated) {
+     return <Navigate to="/" replace={true} />;
+   }
 
   return <AuthLayout data={data} />;
 };
@@ -35,4 +40,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { SignUp })(SignUpForm);
+export default connect(mapStateToProps, { signUp })(SignUpForm);
